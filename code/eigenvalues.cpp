@@ -10,6 +10,12 @@ void eigenvalues::solve(double tolerance, int maxiter){
 offdiag();
 Jacobi_rotate();
 iterations = 1;
+
+
+for(int i=0;i<n;i++){
+  R(i,i) = 1;
+}
+
 while ( m_max > tolerance && iterations <= maxiter)
 {
    offdiag();
@@ -133,4 +139,54 @@ mat eigenvalues::get_solution(int n_, float rho_0, float rho_N){
   B.col(0) = x;
   B.col(1) = u;
   return B;
+}
+
+
+void eigenvalues::QR_GS(){
+  //Gram-Scmidt method
+  mat Q = zeros(n,n);
+  Q.col(0) = A.col(0)*1./norm(A.col(0));
+
+  for(int k = 1;k<n;k++){
+    vec proj = zeros(n);
+    vec v_k = A.col(k);
+
+    for(int j=0;j<k-1;j++){
+      vec u_j = Q.col(j);
+      proj = proj + ( dot(v_k,u_j)*1./dot(u_j,u_j) ) * u_j;
+    }
+    Q.col(k) = v_k - proj;
+    Q.col(k) = Q.col(k)*1./norm(Q.col(k),2);
+
+
+  }
+  R = Q.i()*A;
+  mat D = Q.t()*A*Q;
+
+  D.print();
+
+}
+
+void eigenvalues::Lanczos(){
+  //NEED NON ZERO GUESS FOR r_0
+  mat Q = zeros(n,n);
+  mat R = zeros(n,n);
+
+  int k=0;
+  mat I = eye(n,n);
+
+  vec beta = zeros(n);
+  beta(0) = 1;
+  while(beta(k) != 0){
+    Q.col(k+1) = R.col(k)*1./beta(k);
+    k +=1;
+
+    float alpha_k =  dot(Q.col(k).t(),A*Q.col(k));
+
+    R.col(k) = (A-alpha_k*I)*Q.col(k)-beta(k-1)*Q.col(k-1);
+    beta(k) = norm(R.col(k),2);
+  }
+  //Q.print();
+
+  return;
 }

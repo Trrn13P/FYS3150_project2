@@ -26,7 +26,9 @@ for line in infile:
     u.append(temp)
     temp = []
 
+
 for i in range(0,3):
     plt.plot(rho,u[i],label=r"$\lambda_%g=%.2f$"%(i+1,Llambda[i]))
+    #plt.text(rho[15],u[i][15],r"$\lambda_%g=%.2f$"%(i+1,Llambda[i]),fontsize=14)
 plt.legend()
 plt.show()

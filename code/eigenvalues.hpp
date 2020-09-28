@@ -19,6 +19,8 @@ class eigenvalues {
 
     Mat<double> R;
     Mat<double> A;
+    mat Q;
+    mat R_qr;
 
     bool running;
     bool col_swap;
@@ -27,9 +29,8 @@ class eigenvalues {
       n = n_;
       A = A_;
       R = zeros(n,n);
-      for(int i=0;i<n;i++){
-        R(i,i) = 1;
-      }
+      Q = zeros(n,n);
+      R_qr = zeros(n,n);
     }
       //overload function
       void Initialize(){
@@ -60,6 +61,9 @@ class eigenvalues {
 
     void order_eigenvalues();
     mat get_solution(int n_, float rho_0, float rho_N);
+
+    void Lanczos();
+    void QR_GS();
 
     //setting up the overload
     eigenvalues(mat A, int n_){
