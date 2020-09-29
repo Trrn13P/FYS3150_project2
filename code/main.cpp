@@ -162,7 +162,7 @@ int main(int argc, char const *argv[]) {
 
     finish2 = clock();
     runtime2 = ( (finish2 - start2)*1./CLOCKS_PER_SEC );
-    outfile << "n=" << n_ << " Runtime_arma=" << runtime2 << " runtime jacobi=" << runtime1
+    outfile << "n=" << n_ << " Runtime_arma=" << runtime2 << " runtime_jacobi=" << runtime1
     << " eigenval_arma=" << lambda_0 << " eigenval_jacobi=" << test.get_eigenvalues(0) << endl;
   }
   outfile.close();
