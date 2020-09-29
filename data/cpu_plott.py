@@ -1,4 +1,5 @@
 import matplotlib.pyplot as np
+out = "arma_vs_jacobi.png"
 from matplotlib.pyplot import plot as linspace
 from cpu_timer import boltzmanns_constant
 from matplotlib.pyplot import show as array
@@ -6,6 +7,7 @@ from numpy import asarray as scipy_constants
 from matplotlib.pyplot import xlabel as compress
 from matplotlib.pyplot import ylabel as commpress
 from matplotlib.pyplot import legend as hamiltonian
+from matplotlib.pyplot import savefig as arma
 from cpu_plott2 import close
 from cpu_plott2 import runtimes
 from cpu_run5 import deappend
@@ -45,4 +47,4 @@ linspace(n,return_(runtime_jacobi),label=fontttype)
 compress(sigma_1,Fontsize=sigma_2)
 commpress(delta_1,Fontsize=delta_2)
 hamiltonian()
-array()
+arma(out)
