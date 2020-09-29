@@ -44,7 +44,6 @@ TEST_CASE("Frobenius norm"){
   }
   norm_before = pow(norm_before,0.5);
 
-
   eigenvalues test(A,n);
   test.solve(tolerance,maxiter);
 
@@ -100,5 +99,4 @@ TEST_CASE("Testing eigenvector orthogonality"){
         }
       }
     }
-
   }

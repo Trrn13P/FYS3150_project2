@@ -12,7 +12,7 @@ float V_one_electron(float rho_){
   return rho_ * rho_;
 }
 float V_two_electron(float omega_, float rho_){
-  return omega_ * omega_ * rho_ * rho_ + 1./rho_;
+  return omega_ * omega_ * rho_ * rho_+ 1./rho_;
 }
 
 mat A_notQ(int n){
@@ -126,6 +126,7 @@ outfile.close();
 }
 
 int main(int argc, char const *argv[]) {
+  /*
   float start1, finish1, runtime1;
   float start2, finish2, runtime2;
 
@@ -167,7 +168,7 @@ int main(int argc, char const *argv[]) {
   }
   outfile.close();
 
-
+*/
 
 /*
 plot computing times for different n's for Jacobi_rotate and the other method
@@ -218,9 +219,78 @@ metoder og analytiske
   //test.solve(tolerance,maxiter);
   //test.QR_GS();
   //test.Lanczos();
+  /*
+  int n = 100;
+  int N = n+1;
+  double tolerance = 1.0E-6;
+  int maxiter = 1000000;
+  mat A = A_notQ(n);
+  eigenvalues test(A,n);
+  test.solve(tolerance,maxiter);
+  test.order_eigenvalues();
+
+  float eig_analytical;
+  float eig_arma;
+  float eig_jacobi;
+
+  float h = 1./N;
+  float a = -1*1./pow(h,2);
+  float d = 2*1./pow(h,2);
+
+  vec arma_eigvals = eig_sym(A);
+
+  string filename = "../data/Tabell_egenverdier.txt";
+  ofstream outfile(filename);
 
 
+outfile << "\\begin{table}[ht]" << endl;
+outfile << "\\centering" << endl;
+outfile << "\\begin{tabular}{|c|c|c|c|}" << endl;
+outfile << "\\toprule" << endl;
+outfile << "\\hline" << endl;
+outfile << "Eigenvalue # &  Jacobi & Armadillo & Analytical \\\\" << endl;
+outfile << "\\midrule" << endl;
+outfile << "\\hline" << endl;
 
 
+  for(int i=0;i<5;i++){
+    eig_analytical = d+2*a*cos((i+1)*M_PI*1./N);
+    eig_arma = arma_eigvals(i);
+    eig_jacobi = test.get_eigenvalues(i);
+    outfile << i << " & " << eig_jacobi << " & " << eig_arma << " & " << eig_analytical << "\\\\" << endl;
+    outfile << "\\hline" << endl;
+  }
+  outfile << "\\bottomrule" << endl;
+  outfile << "\\end{tabular}" << endl;
+  outfile << "\\caption{An important table.}" << endl;
+  outfile << "\\label{tab:eigval_comparrison}" << endl;
+  outfile << "\\end{table}" << endl;
+  outfile.close();
+*/
+int n = 100;
+int N = n+1;
+double tolerance = 1.0E-6;
+int maxiter = 1000000;
 
+float rho[5] = {2,3,4,5,6};
+float rho_N = 4;
+float rho_0 = 1E-8;
+int electron_number = 2;
+float omega[4] = {0.01,0.5,1,5};
+float omega_r;
+
+for(int i=0;i<4;i++){
+  omega_r = omega[i];
+  mat A = A_quantum(n,rho_0,rho_N,electron_number,omega_r);
+  eigenvalues test(A,n);
+  test.solve(tolerance,maxiter);
+  test.order_eigenvalues();
+  vec eigvec =  test.get_eigenvectors(0);
+  cout << "[";
+  for(int i=0;i<n-1;i++){
+    cout << eigvec(i) << ",";
+  }
+  cout << eigvec(n-1);
+  cout << "]" << endl << endl;
+  }
 }

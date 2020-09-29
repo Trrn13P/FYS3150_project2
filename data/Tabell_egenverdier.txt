@@ -1,0 +1,23 @@
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccc}
+\toprule
+\hline
+Eigenvalue # &  Jacobi & Armadillo & Analytical \\
+\midrule
+\hline
+0 & 9.86881 & 9.86881 & 9.86881
+\hline
+1 & 39.4657 & 39.4657 & 39.4657
+\hline
+2 & 88.762 & 88.762 & 88.762
+\hline
+3 & 157.71 & 157.71 & 157.71
+\hline
+4 & 246.243 & 246.243 & 246.243
+\hline
+\bottomrule
+\end{tabular}
+\caption{An important table.}
+\label{tab:eigval_comparrison}
+\end{table}

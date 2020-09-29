@@ -1,7 +1,0 @@
-n=10 Runtime_arma=9e-05 runtime_jacobi=0.000187 eigenval_arma=9.8027 eigenval_jacobi=9.8027
-n=50 Runtime_arma=0.003496 runtime_jacobi=0.048505 eigenval_arma=9.86648 eigenval_jacobi=9.86648
-n=100 Runtime_arma=0.007096 runtime_jacobi=0.634776 eigenval_arma=9.86881 eigenval_jacobi=9.86881
-n=200 Runtime_arma=0.013806 runtime_jacobi=9.42606 eigenval_arma=9.8694 eigenval_jacobi=9.8694
-n=300 Runtime_arma=0.021624 runtime_jacobi=48.4609 eigenval_arma=9.86952 eigenval_jacobi=9.86952
-n=400 Runtime_arma=0.035376 runtime_jacobi=151.702 eigenval_arma=9.86955 eigenval_jacobi=9.86955
-n=500 Runtime_arma=0.058688 runtime_jacobi=381.569 eigenval_arma=9.86957 eigenval_jacobi=9.86957
