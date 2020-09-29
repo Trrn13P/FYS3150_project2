@@ -126,7 +126,8 @@ outfile.close();
 }
 
 int main(int argc, char const *argv[]) {
-  float start, finish, runtime2;
+  float start1, finish1, runtime1;
+  float start2, finish2, runtime2;
 
 
   double tolerance = 1.0E-6;
@@ -143,18 +144,25 @@ int main(int argc, char const *argv[]) {
     n_ = arr[i];
     mat A = A_notQ(n_);
     eigenvalues test(A,n_);
+
+    runtime1 = 0;
+    start1 = clock();
+
     test.solve(tolerance,maxiter);
+    finish1 = clock();
+    runtime1 = ( (finish1 - start1)*1./CLOCKS_PER_SEC );
+
     test.order_eigenvalues();
 
 
     runtime2 = 0;
-    start = clock();
+    start2 = clock();
     vec eigval =  eig_sym(A);
     float lambda_0 = eigval(0);
 
-    finish = clock();
-    runtime2 = ( (finish - start)*1./CLOCKS_PER_SEC );
-    outfile << "n=" << n_ << " Runtime_arma=" << runtime2 << " runtime jacobi=" << test.runtime
+    finish2 = clock();
+    runtime2 = ( (finish2 - start2)*1./CLOCKS_PER_SEC );
+    outfile << "n=" << n_ << " Runtime_arma=" << runtime2 << " runtime jacobi=" << runtime1
     << " eigenval_arma=" << lambda_0 << " eigenval_jacobi=" << test.get_eigenvalues(0) << endl;
   }
   outfile.close();
