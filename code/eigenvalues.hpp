@@ -17,7 +17,7 @@ class eigenvalues {
     double t, tau;
     double a_kk, a_ll, a_ik, a_il, r_ik, r_il;
 
-    Mat<double> R;
+    Mat<double> R_eigen;
     Mat<double> A;
     mat Q;
     mat R_qr;
@@ -28,7 +28,10 @@ class eigenvalues {
     void Initialize(mat A_, int n_){
       n = n_;
       A = A_;
-      R = zeros(n,n);
+      R_eigen = zeros(n,n);
+      for(int i=0;i<n;i++){
+        R_eigen(i,i) = 1;
+      }
       Q = zeros(n,n);
       R_qr = zeros(n,n);
     }
@@ -45,6 +48,7 @@ class eigenvalues {
               A(i,i+1) = -1;
             }
           }
+
         std::cout << "Running on overload function\n" << std::endl;
         Initialize(A,n);
       }

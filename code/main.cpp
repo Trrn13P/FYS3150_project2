@@ -2,6 +2,7 @@
 #include <armadillo>
 #include "eigenvalues.hpp"
 #include <fstream>
+#include <cmath>
 
 using namespace arma;
 using namespace std;
@@ -14,10 +15,11 @@ float V_two_electron(float omega_, float rho_){
 }
 
 mat A_notQ(int n){
+  int n = 4;
   int N = n+1;
   float h = 1./N;
-  float a = -1*1./(h*h);
-  float d = 2*1./(h*h);
+  float a = -1*1./pow(h,2);
+  float d = 2*1./pow(h,2);
 
   mat A = zeros(n,n);
   for(int i=0;i<n;i++){
@@ -73,7 +75,7 @@ void one_electron_print(int n,float rho_0,float rho_N,float omega_r, double tole
   string filename = "../data/one_electron/N"+to_string(n)+"_jacobi.txt";
   ofstream outfile(filename);
   outfile << "tolerance=" << tolerance << " ";
-  outfile << "iterations="<< test.iterations << " n=" << n << "n_electrons=" << electron_number<< endl;
+  outfile << "iterations="<< test.iterations << " n=" << n << " n_electrons=" << electron_number<< endl;
   outfile << "rho:\n";
   for(int i=0;i<n+2;i++){
     outfile << B(i,0)<<" ";
@@ -93,15 +95,49 @@ void two_electron_print(int n, double tolerance, int maxiter){
   return;
 }
 
+void buck_beam_print(double tolerance, int maxiter){
+  int n = 100;
+  mat A = A_notQ(n);
+  eigenvalues test(A,n);
+  test.solve(tolerance,maxiter);
+  test.order_eigenvalues();
+  string filename = "../data/buck_beam/N"+to_string(n)+"_jacobi.txt";
+  ofstream outfile(filename);
+  outfile << "tolerance=" << tolerance << " ";
+  outfile << "iterations="<< test.iterations << " n=" << n << endl;
+
+  vec analytic = zeros(n+2);
+  int N = n+1;
+  for(int i=1;i<n;i++){
+    analytic(i) = sin((i)*M_PI/N);
+  }
+
+  mat B = test.get_solution(0,0,1);
+  outfile << "Eigenvalue_0: " << test.get_eigenvalues(0) << endl;
+  outfile << "rho: u_a: u_n:" << endl;
+  for(int i=0;i<n+2;i++){
+    outfile << B(i,0)<<" " << analytic(i) << " " << B(i,1) << endl;
+  }
+}
 
 
 int main(int argc, char const *argv[]) {
+  double tolerance = 1.0E-6;
+  int maxiter = 1000000;
+  buck_beam_print(tolerance, maxiter);
+
+
+
+
 /*
 plot computing times for different n's for Jacobi_rotate and the other method
 Og se paa mean error mellom eigenvalues man finner paa forskjellige
 metoder og analytiske
 */
 
+
+  /*
+  //Printer jacobi for 1 elektron
   int n = 10;
   double tolerance = 1.0E-6;
   int maxiter = 1000000;
@@ -110,7 +146,26 @@ metoder og analytiske
   int electron_number = 1;
   float omega_r = 1;
   one_electron_print(n,rho_0,rho_N,omega_r, tolerance, maxiter);
+  */
 
+  /*
+  int n = 100;
+  double tolerance = 1.0E-6;
+  int maxiter = 1000000;
+  double rho_0 = 1E-8;
+  float rho_N = 4;
+  int electron_number = 2;
+  float omega_r = 1;
+*/
+
+  /*
+  mat A = A_quantum(n,rho_0,rho_N,electron_number,omega_r);
+  eigenvalues test(A,n);
+  //A.print();
+  test.solve(tolerance,maxiter);
+  test.order_eigenvalues();
+  cout << test.get_eigenvalues(0) << endl;
+  */
   //mat A1 = A_notQ(n);
   //eigenvalues test(A1,n);
   //float rho_0 = 0;

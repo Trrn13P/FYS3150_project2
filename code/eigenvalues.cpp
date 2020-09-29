@@ -12,9 +12,18 @@ Jacobi_rotate();
 iterations = 1;
 
 
-for(int i=0;i<n;i++){
-  R(i,i) = 1;
+for(int i = 0;i<2;i++){
+  for(int j=0;j<2;j++){
+    if(j==i){
+      R_eigen(i,j)=1;
+    }
+    else{
+      R_eigen(i,j)=0;
+    }
+  }
 }
+//R_eigen.print();
+
 
 while ( m_max > tolerance && iterations <= maxiter)
 {
@@ -22,7 +31,8 @@ while ( m_max > tolerance && iterations <= maxiter)
    Jacobi_rotate();
    iterations++;
 }
-cout << "iterations:" <<  iterations << endl;
+//R_eigen = 1*R_eigen;
+//cout << "iterations:" <<  iterations << endl;
 }
 
 
@@ -82,11 +92,11 @@ void eigenvalues::Jacobi_rotate()
       A(l,i) = A(i,l);
     }
 //  And finally the new eigenvectors
-    r_ik = R(i,k);
-    r_il = R(i,l);
+    r_ik = R_eigen(i,k);
+    r_il = R_eigen(i,l);
 
-    R(i,k) = c*r_ik - s*r_il;
-    R(i,l) = c*r_il + s*r_ik;
+    R_eigen(i,k) = c*r_ik - s*r_il;
+    R_eigen(i,l) = c*r_il + s*r_ik;
   }
   }
 
@@ -101,7 +111,7 @@ void eigenvalues::order_eigenvalues(){
         float a_ii = A(i,i);
         A(i,i) = a_ip1ip1;
         A(i+1,i+1) = a_ii;
-        R.swap_cols(i+1,i);
+        R_eigen.swap_cols(i+1,i);
         col_swap = TRUE;
       }
       }
@@ -116,7 +126,7 @@ void eigenvalues::order_eigenvalues(){
 vec eigenvalues::get_eigenvectors(int n_){
   vec v = zeros(n);
   for(int i=0;i<n;i++){
-    v(i) = R(i,n_);
+    v(i) = R_eigen(i,n_);
   }
   return v;
 }
@@ -132,7 +142,7 @@ mat eigenvalues::get_solution(int n_, float rho_0, float rho_N){
 
   vec u = zeros(n+2); u(0) = 0; u(n+1) = 0;
   for(int i=0;i<n;i++){
-    u(i+1) = R(i,n_);
+    u(i+1) = R_eigen(i,n_);
     x(i+1) = (i+1)*h + rho_0;
 
   }
@@ -160,17 +170,17 @@ void eigenvalues::QR_GS(){
 
 
   }
-  R = Q.i()*A;
+  R_eigen = Q.i()*A;
   mat D = Q.t()*A*Q;
 
   D.print();
 
 }
-
+/*
 void eigenvalues::Lanczos(){
   //NEED NON ZERO GUESS FOR r_0
   mat Q = zeros(n,n);
-  mat R = zeros(n,n);
+  //mat R = zeros(n,n);
 
   int k=0;
   mat I = eye(n,n);
@@ -190,3 +200,4 @@ void eigenvalues::Lanczos(){
 
   return;
 }
+*/

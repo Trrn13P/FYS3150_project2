@@ -8,12 +8,11 @@
 using namespace std;
 using namespace arma;
 
-mat A_matrix(int n_){
-  int n = n_;
+mat A_notQ(int n){
   int N = n+1;
   float h = 1./N;
-  float a = -1*1./pow(h,2);
-  float d = 2*1./pow(h,2);
+  float a = -1*1./(h*h);
+  float d = 2*1./(h*h);
 
   mat A = zeros(n,n);
   for(int i=0;i<n;i++){
@@ -25,12 +24,13 @@ mat A_matrix(int n_){
         A(i,i+1) = a;
       }
     }
-  return A;
+    return A;
 }
+
 
 TEST_CASE("Frobenius norm"){
     int n = 4;
-    mat A = A_matrix(n);
+    mat A = A_notQ(n);
 
 
     double tolerance = 1.0E-10;
@@ -57,13 +57,14 @@ TEST_CASE("Frobenius norm"){
   REQUIRE(norm_before==Approx(norm_after).epsilon(0.0001));
 }
 
+
 TEST_CASE("Testing eigenvalues"){
   int n = 4;
   int N = n+1;
   float h = 1./N;
   float a = -1*1./pow(h,2);
   float d = 2*1./pow(h,2);
-  mat A = A_matrix(n);
+  mat A = A_notQ(n);
 
     double tolerance = 1.0E-10;
     int maxiter = 1000;
@@ -80,7 +81,7 @@ TEST_CASE("Testing eigenvalues"){
 
 TEST_CASE("Testing eigenvector orthogonality"){
   int n = 4;
-  mat A = A_matrix(n);
+  mat A = A_notQ(n);
 
     double tolerance = 1.0E-10;
     int maxiter = 1000;
@@ -99,4 +100,5 @@ TEST_CASE("Testing eigenvector orthogonality"){
         }
       }
     }
+
   }
