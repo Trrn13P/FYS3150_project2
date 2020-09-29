@@ -3,6 +3,7 @@
 #include "eigenvalues.hpp"
 #include <fstream>
 #include <cmath>
+#include "time.h"
 
 using namespace arma;
 using namespace std;
@@ -15,7 +16,6 @@ float V_two_electron(float omega_, float rho_){
 }
 
 mat A_notQ(int n){
-  int n = 4;
   int N = n+1;
   float h = 1./N;
   float a = -1*1./pow(h,2);
@@ -70,6 +70,7 @@ void one_electron_print(int n,float rho_0,float rho_N,float omega_r, double tole
   eigenvalues test(A,n);
   test.solve(tolerance,maxiter);
   test.order_eigenvalues();
+  /*
   mat B = test.get_solution(0,rho_0,rho_N);
 
   string filename = "../data/one_electron/N"+to_string(n)+"_jacobi.txt";
@@ -88,7 +89,7 @@ void one_electron_print(int n,float rho_0,float rho_N,float omega_r, double tole
     outfile << B.col(1).t();
   }
   outfile.close();
-
+  */
 }
 
 void two_electron_print(int n, double tolerance, int maxiter){
@@ -106,26 +107,57 @@ void buck_beam_print(double tolerance, int maxiter){
   outfile << "tolerance=" << tolerance << " ";
   outfile << "iterations="<< test.iterations << " n=" << n << endl;
 
-  vec analytic = zeros(n+2);
+  vec analytic = zeros(n);
   int N = n+1;
-  for(int i=1;i<n;i++){
+  for(int i=0;i<n-1;i++){
     analytic(i) = sin((i)*M_PI/N);
   }
 
-  mat B = test.get_solution(0,0,1);
   outfile << "Eigenvalue_0: " << test.get_eigenvalues(0) << endl;
   outfile << "rho: u_a: u_n:" << endl;
-  for(int i=0;i<n+2;i++){
-    outfile << B(i,0)<<" " << analytic(i) << " " << B(i,1) << endl;
+  vec rho = zeros(n);
+  for(int i=0;i<n-1;i++){
+    rho(i+1)=1./(n-1)+rho(i);
   }
+  outfile << "rho: "<< rho.t();
+  outfile << "u_a: " << analytic.t();
+  outfile << "u_n: " << test.get_eigenvectors(0).t();
+outfile.close();
 }
 
-
 int main(int argc, char const *argv[]) {
+  float start, finish, runtime2;
+
+
   double tolerance = 1.0E-6;
   int maxiter = 1000000;
-  buck_beam_print(tolerance, maxiter);
+  int n_;
+  //buck_beam_print(tolerance, maxiter);
+  int arr[7] = {10,50,100,200,300,400,500};
 
+
+  string filename = "../data/CPU_TIMES.txt";
+  ofstream outfile(filename);
+
+  for(int i=0;i<7;i++){
+    n_ = arr[i];
+    mat A = A_notQ(n_);
+    eigenvalues test(A,n_);
+    test.solve(tolerance,maxiter);
+    test.order_eigenvalues();
+
+
+    runtime2 = 0;
+    start = clock();
+    vec eigval =  eig_sym(A);
+    float lambda_0 = eigval(0);
+
+    finish = clock();
+    runtime2 += ( (finish - start)*1./CLOCKS_PER_SEC );
+    outfile << "n=" << n_ << " Runtime_arma=" << runtime2 << " runtime jacobi=" << test.runtime
+    << " eigenval_arma=" << lambda_0 << " eigenval_jacobi=" << test.get_eigenvalues(0) << endl;
+  }
+  outfile.close();
 
 
 

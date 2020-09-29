@@ -11,6 +11,8 @@ class eigenvalues {
     double m_max;
 
 
+
+
     int p, q;
 
     double s, c;
@@ -55,6 +57,9 @@ class eigenvalues {
 
 
   public:
+    double runtime;
+    double start;
+    double finish;
     int iterations;
     void offdiag();
     void Jacobi_rotate();

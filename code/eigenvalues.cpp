@@ -11,7 +11,8 @@ offdiag();
 Jacobi_rotate();
 iterations = 1;
 
-
+runtime = 0;
+start = clock();
 for(int i = 0;i<2;i++){
   for(int j=0;j<2;j++){
     if(j==i){
@@ -22,6 +23,8 @@ for(int i = 0;i<2;i++){
     }
   }
 }
+finish = clock();
+runtime += ( (finish - start)*1./CLOCKS_PER_SEC );
 //R_eigen.print();
 
 
@@ -134,23 +137,6 @@ vec eigenvalues::get_eigenvectors(int n_){
 float eigenvalues::get_eigenvalues(int n_){
   return A(n_,n_);
 }
-
-mat eigenvalues::get_solution(int n_, float rho_0, float rho_N){
-  mat B = zeros(n+2,2);
-  vec x = zeros(n+2); x(0) = rho_0; x(n+1) = rho_N;
-  float h = (rho_N+rho_0)*1./(n+2);
-
-  vec u = zeros(n+2); u(0) = 0; u(n+1) = 0;
-  for(int i=0;i<n;i++){
-    u(i+1) = R_eigen(i,n_);
-    x(i+1) = (i+1)*h + rho_0;
-
-  }
-  B.col(0) = x;
-  B.col(1) = u;
-  return B;
-}
-
 
 void eigenvalues::QR_GS(){
   //Gram-Scmidt method

@@ -1,0 +1,7 @@
+n=10 Runtime_arma=7.1e-05 runtime jacobi=4e-06 eigenval_arma=9.8027 eigenval_jacobi=9.8027
+n=50 Runtime_arma=0.000188 runtime jacobi=3e-06 eigenval_arma=9.86648 eigenval_jacobi=9.86648
+n=10 Runtime_arma=8e-06 runtime jacobi=2e-06 eigenval_arma=9.8027 eigenval_jacobi=9.8027
+n=20 Runtime_arma=2.5e-05 runtime jacobi=1e-06 eigenval_arma=9.85121 eigenval_jacobi=9.85121
+n=30 Runtime_arma=5.9e-05 runtime jacobi=2e-06 eigenval_arma=9.86116 eigenval_jacobi=9.86116
+n=40 Runtime_arma=0.000128 runtime jacobi=1e-06 eigenval_arma=9.86478 eigenval_jacobi=9.86478
+n=50 Runtime_arma=0.00015 runtime jacobi=2e-06 eigenval_arma=9.86648 eigenval_jacobi=9.86648
