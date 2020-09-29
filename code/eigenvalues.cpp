@@ -24,7 +24,7 @@ for(int i = 0;i<2;i++){
   }
 }
 finish = clock();
-runtime += ( (finish - start)*1./CLOCKS_PER_SEC );
+runtime = ( (finish - start)*1./CLOCKS_PER_SEC  );
 //R_eigen.print();
 
 

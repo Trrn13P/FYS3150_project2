@@ -153,7 +153,7 @@ int main(int argc, char const *argv[]) {
     float lambda_0 = eigval(0);
 
     finish = clock();
-    runtime2 += ( (finish - start)*1./CLOCKS_PER_SEC );
+    runtime2 = ( (finish - start)*1./CLOCKS_PER_SEC );
     outfile << "n=" << n_ << " Runtime_arma=" << runtime2 << " runtime jacobi=" << test.runtime
     << " eigenval_arma=" << lambda_0 << " eigenval_jacobi=" << test.get_eigenvalues(0) << endl;
   }
